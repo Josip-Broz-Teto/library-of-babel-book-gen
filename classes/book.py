@@ -10,7 +10,9 @@ class Book:
     book_id : int
     book_title : str = ""
 
-    def __init__(self, seed: int, room_id: str, wall_number: int, shelf_number: int, volume_number: int):
+    current_page : int = 0
+
+    def __init__(self, seed: int, room_id: int, wall_number: int, shelf_number: int, volume_number: int):
         if room_id < 1 or room_id > 99999999 :
             print("not 8 letters")
             return
@@ -76,5 +78,12 @@ class Book:
             page_content_converted += self.convert_to_text(int(chunk))
     
         return page_content_converted
-            
     
+    # wrapper functions of get_page
+    def advance_a_page(self):
+        self.current_page += 1
+        #return self.get_page(self.current_page)
+            
+    def return_a_page(self):
+        self.current_page -= 1
+        #return self.get_page(self.current_page)    

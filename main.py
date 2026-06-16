@@ -1,9 +1,12 @@
-from classes.book import Book
-from classes.room import Room
+from classes.ui import Ui
 
 # seed for this world (funny 67)
 seed = 2137**67
 
+ui = Ui(seed)
 
-book = Book(6, 2, 1, 1)
-print(book.book_title)
+ui.show_room_ui()
+ui.show_wall_ui()
+ui.show_shelf_ui()
+ui.show_volume_ui()
+ui.display_book_pages()

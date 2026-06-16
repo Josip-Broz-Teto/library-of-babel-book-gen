@@ -13,28 +13,13 @@ class Book:
     current_page : int = 0
 
     def __init__(self, seed: int, room_id: int, wall_number: int, shelf_number: int, volume_number: int):
-        if room_id < 1 or room_id > 99999999 :
-            print("not 8 letters")
-            return
-        if wall_number > 4 or wall_number < 1 :
-            print("wallNumber bigger than 4, smaller than 1")
-            return
-
-        if shelf_number > 8 or shelf_number < 1 :
-            print("shelfNumber bigger than 8, smaller than 1")
-            return
-
-        if volume_number > 16 or volume_number < 1 :
-            print("volumeNumber bigger than 16, smaller than 1")
-            return
-
         # book id is unique in the whole library
         self.book_id = (
-            (self.seed * 10) +
-            (self.room_id * 1000) +
-            (self.wall_number * 100000) +
-            (self.shelf_number * 10000000) +
-            (self.volume_number * 100000000)
+            (seed * 10) +
+            (room_id * 1000) +
+            (wall_number * 100000) +
+            (shelf_number * 10000000) +
+            (volume_number * 100000000)
         )
 
         # here the name of the book is determined
@@ -52,7 +37,7 @@ class Book:
             lenght_of_title -= 1
 
     # converts a number to letters
-    def convert_to_text(number: int):
+    def convert_to_text(self, number: int):
         letters = "qwertyuiopasdfghjklzxcvbnmw,."
         content = ""
 
@@ -64,9 +49,6 @@ class Book:
     
     # given a page between 1 and 100, get text unique to it
     def get_page(self, page_number: int) -> str:
-        if self.room_id == None:
-            print("set stats first")
-
         random.seed(self.book_id + page_number)
         # this big number guarantees that it always fills a page
         page_content_int = random.randint(29**1199, (29**1200) - 1)

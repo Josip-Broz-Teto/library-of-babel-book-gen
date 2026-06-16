@@ -26,16 +26,22 @@ class Ui:
     def show_room_ui(self):
         print("press enter to lock in a room")
         current_edited_index = 0
-        number_list = [0]
+        number_list = [0,0,0,0,0,0,0,0]
         while True:
             print("← Room number: " + str(number_list) + " →")
             k = readchar.readkey()
             if k == key.LEFT:
-                self.current_room.room_id -= 1
+                self.decrement_list(number_list)
             elif k == key.RIGHT:
                 self.increment_list(number_list)
             elif k == key.ENTER:
                 break
+            elif k in ('0','1','2','3','4','5','6','7','8','9'):
+                if current_edited_index >= 8:
+                    current_edited_index = 0
+                number_list[current_edited_index] = int(k)
+                current_edited_index += 1
+                    
         # reszta
 
     def show_wall_ui(self):
@@ -54,12 +60,12 @@ class Ui:
         self.current_displayed_book = self.current_room.get_book(new_volume_number, self.seed)
 
     def display_book_pages(self):
-        print("page 1 of " + self.current_displayed_book.get_page)
+        print("page 1 of " + str(self.current_displayed_book.get_page(14)))
         print("")
         print(self.current_displayed_book.get_page(self.current_displayed_book.current_page))
 
-    def increment_list(self, list_of_numbers: List[int]):
-            for i in range(len(list_of_numbers)):
+    def increment_list(self, list_of_numbers: List[int], max_size : int = 8):
+            for i in reversed(list_of_numbers):
                 if list_of_numbers[i] == 9:
                     list_of_numbers[i] = 0
                     pass
@@ -68,4 +74,15 @@ class Ui:
                     return
             list_of_numbers.append(1)
             return
+    
+    def decrement_list(self, list_of_numbers: List[int], max_size : int = 8):
+        for i in reversed(list_of_numbers):
+            if list_of_numbers[i] == 0:
+                list_of_numbers[i - 1] = 9
+                pass
+            else:
+                list_of_numbers[i] -= 1
+                return
+        list_of_numbers.append(1)
+        return
 

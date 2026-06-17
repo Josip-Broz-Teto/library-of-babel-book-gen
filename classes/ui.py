@@ -6,6 +6,8 @@ from rich.text import Text
 import readchar
 from readchar import key
 from typing import List
+from os import system, name
+from rich import print
 
 class Ui:
     seed : int
@@ -27,20 +29,41 @@ class Ui:
         print("press enter to lock in a room")
         current_edited_index = 0
         number_list = [0,0,0,0,0,0,0,0]
-        while True:
-            print("← Room number: " + str(number_list) + " →")
-            k = readchar.readkey()
-            if k == key.LEFT:
-                self.decrement_list(number_list)
-            elif k == key.RIGHT:
-                self.increment_list(number_list)
-            elif k == key.ENTER:
-                break
-            elif k in ('0','1','2','3','4','5','6','7','8','9'):
-                if current_edited_index >= 8:
-                    current_edited_index = 0
-                number_list[current_edited_index] = int(k)
-                current_edited_index += 1
+        print(self.return_hexagon())
+        # while True:
+        #     self.clear_console()
+
+        #     # print output handles all of the output in a singular screen, to center it
+        #     print_output = "Press enter to lock in the room number\n"
+
+        #     # Printing the number input
+        #     print_output += "← Room number: "
+        #     for i in range(len(number_list)):
+        #         if i == current_edited_index:
+        #             print_output += "[u]" + str(number_list[i]) + "[/u] "
+        #         else:
+        #             print_output += str(number_list[i]) + " "
+        #     print_output += " →\n"
+        #     # ----------
+
+
+        #     # Print the hexagon
+
+            
+        #     # wpisywanie znaku powinno być na samym końcu !!!!!! top 10 okrętów
+        #     k = readchar.readkey()
+        #     if k == key.LEFT:
+        #         self.decrement_list(number_list)
+        #     elif k == key.RIGHT:
+        #         self.increment_list(number_list)
+        #     elif k == key.ENTER:
+        #         break
+        #     elif k in ('0','1','2','3','4','5','6','7','8','9'):
+        #         if current_edited_index >= 8:
+        #             current_edited_index = 0
+        #         number_list[current_edited_index] = int(k)
+        #         current_edited_index += 1
+
                     
         # reszta
 
@@ -64,25 +87,56 @@ class Ui:
         print("")
         print(self.current_displayed_book.get_page(self.current_displayed_book.current_page))
 
-    def increment_list(self, list_of_numbers: List[int], max_size : int = 8):
-            for i in reversed(list_of_numbers):
+    def increment_list(self, list_of_numbers: List[int]):
+            for i in range(len(list_of_numbers) - 1, -1, -1):
                 if list_of_numbers[i] == 9:
                     list_of_numbers[i] = 0
-                    pass
                 else:
                     list_of_numbers[i] += 1
                     return
-            list_of_numbers.append(1)
+            list_of_numbers.insert(0,1)
             return
     
-    def decrement_list(self, list_of_numbers: List[int], max_size : int = 8):
-        for i in reversed(list_of_numbers):
+    def decrement_list(self, list_of_numbers: List[int]):
+        for i in range(len(list_of_numbers) - 1, -1, -1):
             if list_of_numbers[i] == 0:
-                list_of_numbers[i - 1] = 9
-                pass
+                if(list_of_numbers[i - 1] != 0):
+                    list_of_numbers[i - 1] -= 1
+                    list_of_numbers[i] = 9
             else:
                 list_of_numbers[i] -= 1
                 return
-        list_of_numbers.append(1)
         return
+            
+    def clear_console(self):
+        if name == 'nt':
+            _ = system('cls')
+        else:
+            _ = system('clear')
+
+    #          ██████████          
+    #        ██          ██
+    #      ██              ██
+    #    ██                  ██
+    #  ██                      ██
+    #██                          ██
+    #  ██                      ██
+    #    ██                  ██
+    #      ██              ██
+    #        ██          ██
+    #          ██████████
+    def return_hexagon(self, size: int = 5):
+        hexagon_string = ""
+        for i in range(size):
+            hexagon_string += "  "
+        for i in range(size):
+            hexagon_string += "██"
+        hexagon_string += "\n"
+
+        for i in range(size):
+            for j in range(size):
+                hexagon_string += " "
+            hexagon_string += "██"
+        return hexagon_string
+
 
